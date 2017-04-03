@@ -16,7 +16,7 @@ the License.
 
 <link rel="import" href="../paper-styles/color.html">
 
-<dom-module id="codelab-style">
+<dom-module id="contentsequencer-style">
   <template strip-whitespace>
     <style>
 
@@ -31,7 +31,7 @@ the License.
   };
 
   --app-drawer-content-container: {
-    background: var(--google-codelab-background, --paper-grey-100);
+    background: var(--lrndesign-contentsequencer-background, --paper-grey-100);
   };
 
   --nav-height: 64px;
@@ -63,7 +63,7 @@ app-drawer-layout {
 }
 
 #main-content {
-  background: var(--google-codelab-background, --paper-grey-300);
+  background: var(--lrndesign-contentsequencer-background, --paper-grey-300);
 }
 
 #pages {
@@ -75,7 +75,7 @@ app-drawer-layout {
 }
 
 #main-toolbar {
-  background: var(--google-codelab-header-background, --paper-blue-600);
+  background: var(--lrndesign-contentsequencer-header-background, --paper-blue-600);
   color: #fff;
   display: flex;
   align-items: center;
@@ -98,8 +98,8 @@ paper-icon-button[icon=menu] {
 }
 
 paper-fab {
-  --paper-fab-keyboard-focus-background: var(--google-codelab-fab-background, --paper-blue-700);
-  --paper-fab-background: var(--google-codelab-fab-background, --paper-blue-700);
+  --paper-fab-keyboard-focus-background: var(--lrndesign-contentsequencer-fab-background, --paper-blue-700);
+  --paper-fab-background: var(--lrndesign-contentsequencer-fab-background, --paper-blue-700);
   flex-shrink: 0;
 }
 
@@ -155,7 +155,7 @@ paper-fab {
 }
 
 .navbutton.prevbutton[disabled] {
-  background: var(--google-codelab-fab-background);
+  background: var(--lrndesign-contentsequencer-fab-background);
   color: white;
   transform: scale(0);
 }
@@ -163,7 +163,7 @@ paper-fab {
 .navbutton.donebutton {
   background: var(--google-green-500);
 }
-        
+
 #toc {
   /* ensures bottom of nav scrolling meny doesn't overlap with file bug link. */
   margin-bottom: 1.5em;
@@ -238,7 +238,7 @@ paper-fab {
 }
 
 #metadata {
-  color: var(--google-codelab-footer-text-color, #777);
+  color: var(--lrndesign-contentsequencer-footer-text-color, #777);
   font-size: 0.7em;
   flex: 0 0 80px;
 }

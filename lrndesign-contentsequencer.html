@@ -35,39 +35,38 @@ the License.
 <link rel="import" href="../paper-item/paper-item.html">
 
 <link rel="import" href="layout-style.html">
-<link rel="import" href="codelab-style.html">
-<link rel="import" href="analytics-behavior.html">
+<link rel="import" href="contentsequencer-style.html">
 
 <!--
-This is the top level component of google-codelab elements.
-It expects to find one or more `google-codelab-step` elements in its content.
+This is the top level component of lrndesign-contentsequencer elements.
+It expects to find one or more `lrndesign-contentsequencer-step` elements in its content.
 
 Example:
 
-    <google-codelab title="Awesome codelab" feedback-link="http://example.org"
+    <lrndesign-contentsequencer title="Awesome contentsequencer" feedback-link="http://example.org"
                     last-updated="2015-01-28">
-      <google-codelab-step label="One" step="1" duration="10">
+      <lrndesign-contentsequencer-step label="One" step="1" duration="10">
         ...
-      </google-codelab-step>
-      <google-codelab-step label="Two" step="2" duration="15">
+      </lrndesign-contentsequencer-step>
+      <lrndesign-contentsequencer-step label="Two" step="2" duration="15">
         ...
-      </google-codelab-step>
-    </google-codelab>
+      </lrndesign-contentsequencer-step>
+    </lrndesign-contentsequencer>
 
 The element can also be used in a minimalistic mode where less styling is
 applied. Use the `theme="minimal"` attribute and combine with the
 `noToolbar`, `noArrows`, and `noHighlight` properties to turn off the top nav and
 prevent syntax highlighting code blocks, respectively:
 
-    <google-codelab theme="minimal" no-toolbar no-arrows no-highlight>
+    <lrndesign-contentsequencer theme="minimal" no-toolbar no-arrows no-highlight>
 
-@demo demo/codelab.html
+@demo demo/contentsequencer.html
 @demo demo/embed.html
 -->
-<dom-module id="google-codelab">
+<dom-module id="lrndesign-contentsequencer">
   <template strip-whitespace>
     <style include="layout-style"></style>
-    <style include="codelab-style"></style>
+    <style include="contentsequencer-style"></style>
 
     <iron-localstorage name="{{title}}" value="{{state}}" hidden
         on-iron-localstorage-load-empty="_stateInit"
@@ -86,23 +85,13 @@ prevent syntax highlighting code blocks, respectively:
             </div>
 
             <paper-menu id="toc" class="flex" selected="{{selected}}"
-                        on-iron-select="_allowCodelabComplete">
+                        on-iron-select="_allowcontentsequencerComplete">
               <template is="dom-repeat" items="{{steps}}" strip-whitespace>
                 <paper-item class$="{{_tocItemClass(selected, index)}}">
                   <i>{{item.step}}</i><span>{{item.label}}</span>
                 </paper-item>
               </template>
             </paper-menu>
-          </div>
-
-          <div id="metadata">
-            <template is="dom-if" if="{{lastUpdated}}" strip-whitespace>
-              <div id="last-updated">Last updated on {{lastUpdated}}.</div>
-            </template>
-            <div id="feedback" hidden$="[[!feedbackLink]]">
-              Did you find a mistake?
-              <a target="_blank" href$="{{feedbackLink}}">Please file a bug</a>.
-            </div>
           </div>
 
         </div>
@@ -113,14 +102,6 @@ prevent syntax highlighting code blocks, respectively:
 
         <div id="headerpanel" fixed narrow$="[[_narrow]]">
           <div id="main-toolbar" hidden$="[[noToolbar]]">
-            <div>
-              <template is="dom-if" if="{{_narrow}}" strip-whitespace>
-                <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-              </template>
-              <template is="dom-if" if="{{!_narrow}}" strip-whitespace>
-                <paper-icon-button icon="arrow-back" on-tap="_goToHome"></paper-icon-button>
-              </template>
-            </div>
             <h3 class="title">[[title]]</h3>
             <div title="Time remaining" hidden$="{{!_isPositiveNum(duration)}}"
                  class="countdown layout horizontal">
@@ -134,7 +115,7 @@ prevent syntax highlighting code blocks, respectively:
           <neon-animated-pages id="pages" selected="{{selected}}"
               on-iron-deselect="_onStepLeave"
               on-iron-items-changed="_onStepsChanged">
-            <content select="google-codelab-step"></content>
+            <content select="lrndesign-contentsequencer-step"></content>
           </neon-animated-pages>
 
           <footer id="controls" hidden$="[[noArrows]]" narrow$="[[_narrow]]">
@@ -155,7 +136,7 @@ prevent syntax highlighting code blocks, respectively:
 
                 <template is="dom-if" if="{{_showDoneFab(selected, steps)}}" strip-whitespace>
                   <paper-fab icon="done" raised class="navbutton donebutton"
-                    on-tap="_goToHome" title="Complete codelab">
+                    on-tap="_goToDoneLink" title="Complete contentsequencer">
                   </paper-fab>
                 </template>
               </div>
@@ -178,32 +159,31 @@ prevent syntax highlighting code blocks, respectively:
   </template>
   <script>
     Polymer({
-      is: 'google-codelab',
+      is: 'lrndesign-contentsequencer',
 
       /**
-       * Fired when the codelab steps have been fully initialized.
-       * @event google-codelab-ready
+       * Fired when the contentsequencer steps have been fully initialized.
+       * @event lrndesign-contentsequencer-ready
        */
 
       /**
-       * Fired when user advances a codelab step or goes backwards.
-       * @event google-codelab-step
+       * Fired when user advances a contentsequencer step or goes backwards.
+       * @event lrndesign-contentsequencer-step
        * detail {{step: Object, index: Number}}
        */
 
       /**
-       * Fired when user reaches the last step of the codelab.
-       * @event google-codelab-complete
+       * Fired when user reaches the last step of the contentsequencer.
+       * @event lrndesign-contentsequencer-complete
        */
 
       behaviors: [
         Polymer.IronA11yKeysBehavior,
-        GoogleCodelabs.AnalyticsBehavior
       ],
 
       properties: {
         /**
-         * Codelab title
+         * contentsequencer title
          */
         title: {
           type: String,
@@ -219,7 +199,7 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Codelab environment, e.g. 'web'
+         * contentsequencer environment, e.g. 'web'
          */
         environment: {
           type: String,
@@ -227,7 +207,7 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Feedback URL for the codelab bug repors.
+         * Feedback URL for the contentsequencer bug repors.
          */
         feedbackLink: {
           type: String,
@@ -244,7 +224,7 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Total duration of the codelab, in minutes.
+         * Total duration of the contentsequencer, in minutes.
          */
         duration: {
           type: Number,
@@ -262,7 +242,7 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Last date the codelab was updated, in YYYY-MM-DD format.
+         * Last date the contentsequencer was updated, in YYYY-MM-DD format.
          */
         lastUpdated: {
           type: String,
@@ -270,7 +250,15 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Step elements of the codelab. Currently, only `<google-codelab-step>`
+         * Link to go to when finished
+         */
+        doneLink: {
+          type: String,
+          value: '/'
+        },
+
+        /**
+         * Step elements of the contentsequencer. Currently, only `<lrndesign-contentsequencer-step>`
          * elements are supported.
          * The steps are populated on 'attached': callback for distributed children
          * changes is still being worked on https://github.com/Polymer/polymer/issues/1773
@@ -282,7 +270,7 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Codelab state, synced with `localStorage`.
+         * contentsequencer state, synced with `localStorage`.
          * See `_stateInit` for object properties.
          */
         state: {
@@ -316,8 +304,8 @@ prevent syntax highlighting code blocks, respectively:
         },
 
         /**
-         * Last selected step before leaving the codelab.
-         * Used in the $.resumeDialog to prompt a user to resume the codelab
+         * Last selected step before leaving the contentsequencer.
+         * Used in the $.resumeDialog to prompt a user to resume the contentsequencer
          * where the left off.
          *
          * It is synced with the `state.stepIndex` one time only, when the storage
@@ -331,8 +319,8 @@ prevent syntax highlighting code blocks, respectively:
         /**
          * When true, indicates that the current step change was initiated
          * from the $.resumeDialog by the user clicking on 'resume' button.
-         * This is mainly to prevent firing 'codelab-complete' event
-         * every time users return to a codelab they've actually already done.
+         * This is mainly to prevent firing 'contentsequencer-complete' event
+         * every time users return to a contentsequencer they've actually already done.
          */
         _resumed: {
           type: Boolean,
@@ -377,11 +365,11 @@ prevent syntax highlighting code blocks, respectively:
         this._setSteps(steps);
         this._setDuration(duration);
         this._updateRemaining();
-        this.fire('google-codelab-ready', {steps: this.steps});
+        this.fire('lrndesign-contentsequencer-ready', {steps: this.steps});
       },
 
       /**
-       * Advance one step of the codelab.
+       * Advance one step of the contentsequencer.
        */
       selectNext: function() {
         this.$.pages.entryAnimation = 'slide-from-right-animation';
@@ -399,14 +387,14 @@ prevent syntax highlighting code blocks, respectively:
       },
 
       /**
-       * Select an arbitrary step of the codelab.
+       * Select an arbitrary step of the contentsequencer.
        */
       select: function(stepIndex) {
         if (stepIndex < 0 || stepIndex > this.steps.length - 1) {
           return;
         }
 
-        this._allowCodelabComplete();
+        this._allowcontentsequencerComplete();
         this.selected = stepIndex;
       },
 
@@ -423,11 +411,11 @@ prevent syntax highlighting code blocks, respectively:
 
         location.hash = this.selected.toString();
 
-        this.fire('google-codelab-step', {index: this.selected, step: step});
+        this.fire('lrndesign-contentsequencer-step', {index: this.selected, step: step});
 
         if (this.selected === this.steps.length - 1 &&
             !this._resumed && this._userHasNavigated) {
-          this.fire('google-codelab-complete');
+          this.fire('lrndesign-contentsequencer-complete');
         }
       },
 
@@ -448,7 +436,7 @@ prevent syntax highlighting code blocks, respectively:
         this.async(function() {
           this._storedStep = this.steps[this.state.stepIndex];
           // resume dialog is shown only when all 3 conditions hold:
-          // 1. user has already visited the codelab in the past
+          // 1. user has already visited the contentsequencer in the past
           // 2. has made at least 1 step
           // 3. user is landed on the first step
           if (this.selected === 0 && this.state.stepIndex > 0) {
@@ -468,7 +456,7 @@ prevent syntax highlighting code blocks, respectively:
         this.selected = step;
       },
 
-      _allowCodelabComplete: function() {
+      _allowcontentsequencerComplete: function() {
         this._set_userHasNavigated(true);
       },
 
@@ -490,26 +478,33 @@ prevent syntax highlighting code blocks, respectively:
         this._resumed = false;
       },
 
-      _goToHome: function () {
-        // extract 'index' search param
-        var index;
-        var parts = location.search.substring(1).split('&');
-        for (var i = 0; i < parts.length; i++) {
-          var param = parts[i].split('=');
-          if (param[0] === 'index') {
-            index = param[1];
-            break;
+      _goToDoneLink: function () {
+        // if there isn't a done link, default to fallback behavior
+        // of finding an index link
+        if (this.doneLink != '') {
+          window.location.href = this.doneLink;
+        }
+        else {
+          // extract 'index' search param
+          var index;
+          var parts = location.search.substring(1).split('&');
+          for (var i = 0; i < parts.length; i++) {
+            var param = parts[i].split('=');
+            if (param[0] === 'index') {
+              index = param[1];
+              break;
+            }
           }
+          // decode and extract index name from the search param
+          // default index is 'index'
+          index = index ? decodeURIComponent(index) : '';
+          index = index.replace(/[^a-z0-9\-]+/ig, '');
+          if (index === 'index') {
+            index = '';
+          }
+          // navigate away to the index page
+          window.location.href = '/' + index;
         }
-        // decode and extract index name from the search param
-        // default index is 'index'
-        index = index ? decodeURIComponent(index) : '';
-        index = index.replace(/[^a-z0-9\-]+/ig, '');
-        if (index === 'index') {
-          index = '';
-        }
-        // navigate away to the index page
-        window.location.href = '/' + index;
       },
 
       _tocItemClass: function(selected, i) {
@@ -548,7 +543,7 @@ prevent syntax highlighting code blocks, respectively:
       },
 
       _nextFabTitle: function(stepIndex) {
-        return stepIndex > 0 ? 'Next step' : 'Start codelab';
+        return stepIndex > 0 ? 'Next step' : 'Start contentsequencer';
       }
     });
   </script>
