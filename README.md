@@ -1,19 +1,38 @@
-# Google Codelab Components
+# \<lrndesign-contentsequencer\>
+- a fork of Google Codelab Components - A set of Polymer elements, core of the Google Codelabs platform.
+Demo: https://lrnwebcomponents.github.io/lrndesign-contentsequencer/components/lrndesign-contentsequencer/
 
-A set of Polymer elements, core of the Google Codelabs platform.
+## Install the Polymer-CLI
 
-## Dev setup
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
-`bower install` is the obvious first thing to do.
+## Viewing Your Application
 
-To play with the demos, an easy thing would be to use
-[polyserve](https://github.com/PolymerLabs/polyserve):
-`npm install -g polyserve`.
+```
+$ polymer serve
+```
 
-Fire up the server with `polyserve` command and point your browser to:
+## Building Your Application
 
-    http://localhost:8080/components/codelab-components/
+```
+$ polymer build
+```
 
-Use [web-component-tester](https://github.com/Polymer/web-component-tester) to run tests.
-Can be installed with `npm install -g web-component-tester`, or just fire up `polyserve`
-and navigate to `/components/codelab_components/test/<test-file>`.
+This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
+containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
+CSS, and JS optimizers.
+
+You can serve the built versions by giving `polymer serve` a folder to serve
+from:
+
+```
+$ polymer serve build/bundled
+```
+
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
