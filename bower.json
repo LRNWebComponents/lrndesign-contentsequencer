@@ -1,7 +1,7 @@
 {
-  "name": "contentsequencer-components",
+  "name": "lrndesign-contentsequencer",
   "version": "0.0.1",
-  "main": "lrndesign-contentsequencer-elements.html",
+  "main": "lrndesign-contentsequencer.html",
   "license": "Apache2",
   "dependencies": {
     "app-layout": "PolymerElements/app-layout#^0.10.0",
