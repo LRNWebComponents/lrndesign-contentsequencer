@@ -1,8 +1,8 @@
 {
-  "name": "codelab-components",
+  "name": "contentsequencer-components",
   "version": "2.0.2",
   "private": true,
-  "main": "google-codelab-elements.html",
+  "main": "lrndesign-contentsequencer-elements.html",
   "license": "Apache2",
   "dependencies": {
     "app-layout": "PolymerElements/app-layout#^0.10.0",
